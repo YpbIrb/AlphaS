@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts.Utility;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -12,17 +15,19 @@ namespace Assets.Scripts
 {
     class AlphaSNetManager : Singleton<AlphaSNetManager>
     {
+        private const string base_url = "http://localhost:8000/api";
+        private const string participant_creation_url = "/Participant/Create";
+        static readonly HttpClient client = new HttpClient();
 
 
         protected override void Awake()
         {
             base.Awake();
 
-
         }
 
 
-        public void SendGet(string url)
+        void SendGet(string url)
         {
             //string url = "https://localhost:5001/api/Participant";
             StartCoroutine(GetRequest(url));
@@ -70,7 +75,30 @@ namespace Assets.Scripts
             }
         }
 
+        public async Task<Participant> SendRegistrationRequestAsync(string registrationRequest)
+        {
+            UnityEngine.Debug.Log("Sending registration request");
+            StringContent content = new StringContent(registrationRequest, Encoding.UTF8, "application/json");
+            using (HttpResponseMessage response = await client.PostAsync(base_url + participant_creation_url, content))
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var jpart = JObject.Parse(responseBody);
+                    Participant part = jpart.ToObject<Participant>();
+                    return part;
+                }
 
+                else
+                {
+                    UnityEngine.Debug.Log("Unseccessfull http request");
+                    return null;
+                }
+            };
+
+
+
+        }
 
     }
 }

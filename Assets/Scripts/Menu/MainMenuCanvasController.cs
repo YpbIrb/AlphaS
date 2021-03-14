@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Menu
 {
-    public class MainCanvasController : CanvasController
+    public class MainMenuCanvasController : CanvasController
     {
 
 

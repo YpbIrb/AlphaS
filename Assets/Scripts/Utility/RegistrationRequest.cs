@@ -9,21 +9,21 @@ namespace Assets.Scripts.Utility
 {
 
     
-    public class RegistrationInfo
+    public class RegistrationRequest
     {
         [JsonProperty("Gender")]
         string Gender { get; set; }
 
-        [JsonProperty("BirthDate")]
+        [JsonProperty("Birth_Date")]
         DateTime BirthDate { get; set; }
 
-        [JsonProperty("BirthCity")]
+        [JsonProperty("Birth_City")]
         string BirthCity { get; set; }
 
-        [JsonProperty("BirthCountry")]
+        [JsonProperty("Birth_Country")]
         string BirthCountry { get; set; }
 
-        public RegistrationInfo(string gender, DateTime birthDate, string birthCity, string birthCountry)
+        public RegistrationRequest(string gender, DateTime birthDate, string birthCity, string birthCountry)
         {
             Gender = gender;
             BirthDate = birthDate;

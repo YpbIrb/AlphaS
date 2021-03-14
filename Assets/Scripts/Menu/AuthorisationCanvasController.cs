@@ -20,9 +20,9 @@ namespace Assets.Scripts.Menu
             this.menuCanvasType = MenuCanvasType.AuthorisationMenu;
         }
 
-        public AuthorisationInfo GetAuthorisationInfo()
+        public AuthorisationRequest GetAuthorisationInfo()
         {
-            return new AuthorisationInfo(IDInputField.GetComponent<TextMeshProUGUI>().text);
+            return new AuthorisationRequest(IDInputField.GetComponent<TextMeshProUGUI>().text);
         }
 
 

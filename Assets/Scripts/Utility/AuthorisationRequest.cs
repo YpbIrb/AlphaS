@@ -9,12 +9,12 @@ namespace Assets.Scripts.Utility
 {
 
 
-    public class AuthorisationInfo
+    public class AuthorisationRequest
     {
         [JsonProperty("ID")]
         string ID { get; set; }
 
-        public AuthorisationInfo(string iD)
+        public AuthorisationRequest(string iD)
         {
             ID = iD;
         }

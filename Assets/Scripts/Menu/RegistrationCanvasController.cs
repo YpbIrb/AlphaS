@@ -3,66 +3,117 @@ using System.Collections.Generic;
 using UnityEngine;
 using Assets.Scripts.Utility;
 using TMPro;
+using System;
+using UnityEngine.UI;
 
 namespace Assets.Scripts.Menu
 {
     public class RegistrationCanvasController : CanvasController
     {
         [SerializeField]
-        GameObject BirthDateInputField;
+        TMP_InputField BirthDayInputField;
 
         [SerializeField]
-        GameObject BirthCountryInputField;
+        TMP_InputField BirthMonthInputField;
 
         [SerializeField]
-        GameObject BirthCityInputField;
+        TMP_InputField BirthYearInputField;
 
         [SerializeField]
-        GameObject GenderDropdown; 
+        TMP_InputField BirthCountryInputField;
+
+        [SerializeField]
+        TMP_InputField BirthCityInputField;
+
+        [SerializeField]
+        TMP_Dropdown GenderDropdown;
+
+        [SerializeField]
+        GameObject DateWarning;
+
+        [SerializeField]
+        GameObject RegistrationButton;
+
+        bool is_date_correct;
 
 
         protected void Awake()
-        {  
+        {
+            RegistrationButton.GetComponent<Button>().interactable = false;
+            DateWarning.SetActive(false);
+            BirthDayInputField.onEndEdit.AddListener(delegate { DateValidation(); });
+            BirthMonthInputField.onEndEdit.AddListener(delegate { DateValidation(); });
+            BirthYearInputField.onEndEdit.AddListener(delegate { DateValidation(); });
             Debug.Log("In Awake in RegistrationCanvasController");
             this.menuCanvasType = MenuCanvasType.RegistrationMenu;
         }
 
-        public RegistrationInfo GetRegistrationInfo()
+
+        public RegistrationRequest GetRegistrationInfo()
         {
-            /*
-            if(BirthCityInputField != null)
-            {
-                Debug.Log("BirthCityInputField NOT null");
-            }
-            else
-            {
-                Debug.Log("BirthCityInputField IS null");
-            }
 
-            
+            DateTime birth_date = GetBirthDate();   
 
-            Debug.Log(BirthCityInputField.GetType());
-
-            TextMeshProUGUI text = BirthCityInputField.GetComponent<TextMeshProUGUI>();
-            if (!text) Debug.Log("There is no such component on the object!");
-            else
-            {
-                Debug.Log("There is TextMeshProUGUI component on the object!");
-            }
-
-            Debug.Log(BirthCityInputField.GetComponent<TextMeshProUGUI>().text);
-            */
-
-            TMP_Dropdown dropdown = GenderDropdown.GetComponent<TMP_Dropdown>();
-            
-
-            RegistrationInfo res = new RegistrationInfo(GenderDropdown.GetComponent<TMP_Dropdown>().captionText.text, new System.DateTime(), BirthCityInputField.GetComponent<TextMeshProUGUI>().text, BirthCountryInputField.GetComponent<TextMeshProUGUI>().text) ;
+            RegistrationRequest res = new RegistrationRequest(GenderDropdown.GetComponent<TMP_Dropdown>().captionText.text, birth_date, BirthCityInputField.text, BirthCountryInputField.text) ;
 
 
 
             return res;
         }
 
+        //Возвращает введенную пользователем дату, или null при ошибке конвертации
+        private DateTime GetBirthDate()
+        {
+            int birth_day = Int32.Parse(BirthDayInputField.text);
+            int birth_month = Int32.Parse(BirthMonthInputField.text);
+            int birth_year = Int32.Parse(BirthYearInputField.text);
+
+            DateTime res = new DateTime(birth_year, birth_month, birth_day);
+
+            Debug.Log("Birth Date : " + res);
+            return res;
+        }
+
+        public void DateValidation()
+        {
+            int birth_day;
+            int birth_month;
+            int birth_year;
+
+            if (!Int32.TryParse(BirthDayInputField.text,    out birth_day)      ||
+                !Int32.TryParse(BirthMonthInputField.text,  out birth_month)    ||
+                !Int32.TryParse(BirthYearInputField.text,   out birth_year)       )
+            {
+                ShowDateError();
+                RegistrationButton.GetComponent<Button>().interactable = false;
+                is_date_correct = false;
+                return;
+            }
+
+            try
+            {
+                DateTime res = new DateTime(birth_year, birth_month, birth_day);
+                Debug.Log("In Validation. Birth Date : " + res);
+
+                RegistrationButton.GetComponent<Button>().interactable = true;
+                DateWarning.SetActive(false);
+                is_date_correct = true;
+            }
+            catch (ArgumentOutOfRangeException)
+            {   
+                ShowDateError();
+                RegistrationButton.GetComponent<Button>().interactable = false;
+                is_date_correct = false;
+                return;
+            }
+
+        }
+
+        private void ShowDateError()
+        {
+
+
+        }
 
     }
 }

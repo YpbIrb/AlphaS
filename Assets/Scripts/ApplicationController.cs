@@ -39,15 +39,17 @@ namespace Assets.Scripts
 
                 case Notification.RegistrationSend:
                     RegistrationCanvasController registrationCanvasController = (RegistrationCanvasController)canvasManager.GetCanvasControllerByType(MenuCanvasType.RegistrationMenu);
-                    RegistrationInfo registrationInfo = registrationCanvasController.GetRegistrationInfo();
+                    RegistrationRequest registrationInfo = registrationCanvasController.GetRegistrationInfo();
                     res = dataManager.Register(registrationInfo);
                     if (res != 0)
                     {
 
                     }
-                    var net_manager = AlphaSNetManager.GetInstance();
+
+                    //var net_manager = AlphaSNetManager.GetInstance();
                     //https://localhost:5001/api/Participant
-                    net_manager.SendGet("https://localhost:5001/api/Participant");
+                    //net_manager.SendGet("https://localhost:5001/api/Participant");
+
                     applicationView.OpenScreen(ScreenType.MainMenu);
                     break;
 
@@ -58,7 +60,7 @@ namespace Assets.Scripts
 
                 case Notification.AuthorisationSend:
                     AuthorisationCanvasController authorisationCanvasController = (AuthorisationCanvasController)canvasManager.GetCanvasControllerByType(MenuCanvasType.AuthorisationMenu);
-                    AuthorisationInfo authorisationInfo = authorisationCanvasController.GetAuthorisationInfo();
+                    AuthorisationRequest authorisationInfo = authorisationCanvasController.GetAuthorisationInfo();
 
                     res = dataManager.Login(authorisationInfo);
                     if (res != 0)

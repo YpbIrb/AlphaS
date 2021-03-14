@@ -23,16 +23,17 @@ namespace Assets.Scripts
         }
 
 
-        public int Register(RegistrationInfo registrationInfo)
+        public int Register(RegistrationRequest registrationInfo)
         {
             string registration_json = JsonConvert.SerializeObject(registrationInfo);
+            netManager.SendRegistrationRequestAsync(registration_json);
             Debug.Log("In Register in DataManager");
             Debug.Log("Json : " + registration_json);
             return 0;
         }
 
 
-        public int Login(AuthorisationInfo authorisationInfo)
+        public int Login(AuthorisationRequest authorisationInfo)
         {
 
             string authprosation_json = JsonConvert.SerializeObject(authorisationInfo);
