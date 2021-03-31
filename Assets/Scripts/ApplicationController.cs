@@ -71,16 +71,30 @@ namespace Assets.Scripts
                     break;
 
 
-                case Notification.AssigmentStart:
-                    applicationView.OpenScreen(ScreenType.AssigmentScreen);
+                case Notification.MatchingStart:
+                    Debug.Log("Opening matching screen");
+                    applicationView.OpenScreen(ScreenType.MatchingScreen);
                     break;
 
                 case Notification.BaseAlphaStart:
-                    applicationView.OpenScreen(ScreenType.BaseAlphaScreen);
+                    applicationView.ShowErrorMessage("No base alpha ((");
+
+                    Debug.Log(":AOSDkfjs;dlfkjad;rlrk");
+
+
+                    //applicationView.OpenScreen(ScreenType.BaseAlphaScreen);
                     break;
 
                 case Notification.GameStart:
                     applicationView.OpenScreen(ScreenType.GameScreen);
+                    break;
+
+                case Notification.MatchingFinish:
+                    applicationView.OpenScreen(ScreenType.MainMenu);
+                    break;
+
+                case Notification.CloseError:
+                    applicationView.CloseErrorMessage();
                     break;
 
                 default:

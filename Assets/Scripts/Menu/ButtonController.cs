@@ -15,7 +15,8 @@ namespace Assets.Scripts.Menu
         Registration_Send,
         Main_BaseAlpha_Start,
         Main_Assigment_Start,
-        Main_Game_Start
+        Main_Game_Start,
+        Error_close
     }
 
 
@@ -59,7 +60,7 @@ namespace Assets.Scripts.Menu
 
 
                 case ButtonType.Main_Assigment_Start:
-                    applicationController.OnNotification(Notification.AssigmentStart);
+                    applicationController.OnNotification(Notification.MatchingStart);
                     break;
 
                 case ButtonType.Main_BaseAlpha_Start:
@@ -69,6 +70,11 @@ namespace Assets.Scripts.Menu
                 case ButtonType.Main_Game_Start:
                     applicationController.OnNotification(Notification.GameStart);
                     break;
+
+                case ButtonType.Error_close:
+                    applicationController.OnNotification(Notification.CloseError);
+                    break;
+
                 default:
                     break;
             }

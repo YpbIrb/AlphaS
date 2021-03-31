@@ -14,8 +14,10 @@ namespace Assets.Scripts
         AuthorisationSend, // Пользователь отправляет данные для авторизации
         
         BaseAlphaStart, // Пользователь выбрал процедуру измерения базового альфа-ритма
-        AssigmentStart, // Пользователь выбрал процедуру соотнесения показателей
-        GameStart
+        MatchingStart, // Пользователь выбрал процедуру соотнесения показателей
+        GameStart,
+        MatchingFinish,
+        CloseError
     }
 
 
