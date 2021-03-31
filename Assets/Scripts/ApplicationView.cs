@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts
@@ -16,7 +17,7 @@ namespace Assets.Scripts
         AuthorisationMenu,
         MainMenu,
         BaseAlphaScreen,
-        AssigmentScreen,
+        MatchingScreen,
         GameScreen
         
     }
@@ -36,7 +37,13 @@ namespace Assets.Scripts
 
         public void ShowErrorMessage(String message)
         {
+            ((ErrorCanvasController)menuCanvasManager.GetCanvasControllerByType(MenuCanvasType.ErrorMessageMenu)).SetErrorMessage(message);
+            menuCanvasManager.ShowError();
+        }
 
+        public void CloseErrorMessage()
+        {
+            menuCanvasManager.CloseError();
         }
 
         public void OpenScreen(ScreenType screenType)
@@ -44,34 +51,38 @@ namespace Assets.Scripts
             switch (screenType)
             {
                 case ScreenType.IdentificationTypeChoiceMenu:
-                    SceneManager.LoadScene(1);
+                    SceneManager.LoadScene(1, LoadSceneMode.Single);
                     break;
 
                 case ScreenType.RegistrationMenu:
-                    menuCanvasManager.SwitchCanvas(MenuCanvasType.RegistrationMenu);
+                    menuCanvasManager.OpenCanvas(MenuCanvasType.RegistrationMenu);
                     break;
 
-                case ScreenType.AssigmentScreen:
-                    SceneManager.LoadScene(2);
+                case ScreenType.MatchingScreen:
+                    Debug.Log("Openeing MatchingScreen");
+                    menuCanvasManager.DisableMenu();
+                    SceneManager.LoadScene(2, LoadSceneMode.Single);
                     break;
 
                 case ScreenType.AuthorisationMenu:
-                    menuCanvasManager.SwitchCanvas(MenuCanvasType.AuthorisationMenu);
+                    menuCanvasManager.OpenCanvas(MenuCanvasType.AuthorisationMenu);
                     break;
 
                 case ScreenType.MainMenu:
+                    Debug.Log("Openeing Main Menu");
                     if (SceneManager.GetActiveScene().buildIndex != 0)
-                        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+                        SceneManager.LoadScene(0, LoadSceneMode.Single);
 
-                    menuCanvasManager.SwitchCanvas(MenuCanvasType.MainMenu);
+
+                    menuCanvasManager.OpenCanvas(MenuCanvasType.MainMenu);
                     break;
 
                 case ScreenType.BaseAlphaScreen:
-                    SceneManager.LoadScene(1);
+                    SceneManager.LoadScene(1, LoadSceneMode.Single);
                     break;
 
                 case ScreenType.GameScreen:
-                    SceneManager.LoadScene(3);
+                    //SceneManager.LoadScene(3);
                     break;
             }
         } 

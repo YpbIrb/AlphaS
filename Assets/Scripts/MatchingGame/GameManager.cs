@@ -1,10 +1,11 @@
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-
+    
     private float timeRemaining = 30F;
     private float timeToMatching;
     private const float MatchingTime = 5F;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log("Matching started");
         planeR = GameObject.Find("PlaneR");
         planeL = GameObject.Find("PlaneL");
 
@@ -32,15 +34,15 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if (timeRemaining > 0) {
-            Debug.Log("Remaining time"+timeRemaining);
+            //Debug.Log("Remaining time"+timeRemaining);
             timeRemaining-=Time.deltaTime;
         } 
         if(timeRemaining <= 0) { 
              GameOver(); 
         }
 
-         Debug.Log("RightPlane position:" + planeR.transform.position[1]);
-         Debug.Log("LeftPlane position:" + planeL.transform.position[1]);
+         //Debug.Log("RightPlane position:" + planeR.transform.position[1]);
+         //Debug.Log("LeftPlane position:" + planeL.transform.position[1]);
 
          if((planeR.transform.position[1] - planeL.transform.position[1]) < 0.5){
             timeToMatching-=Time.deltaTime; 
@@ -57,6 +59,7 @@ public class GameManager : MonoBehaviour
     void GameOver(){
         //Time.timeScale = 0;
         Debug.Log("Game over");
-        Application.Quit();
+        ApplicationController.GetInstance().OnNotification(Notification.MatchingFinish);
+        //Application.Quit();
     }
 }
