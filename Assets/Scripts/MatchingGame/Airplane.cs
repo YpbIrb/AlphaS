@@ -19,7 +19,7 @@ public class Airplane : MonoBehaviour
     void Start()
     {
         height = transform.localScale.y;
-        Debug.Log(height + "\n");
+        //Debug.Log(height + "\n");
     }
 
     // Update is called once per frame
