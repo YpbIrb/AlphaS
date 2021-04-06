@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour
     void GameOver(){
         //Time.timeScale = 0;
         Debug.Log("Game over");
-        ApplicationController.GetInstance().OnNotification(Notification.MatchingFinish);
+        ApplicationController.GetInstance().OnMatchingFinish();
         //Application.Quit();
     }
 }

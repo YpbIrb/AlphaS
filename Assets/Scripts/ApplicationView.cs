@@ -18,35 +18,53 @@ namespace Assets.Scripts
         MainMenu,
         BaseAlphaScreen,
         MatchingScreen,
-        GameScreen
-        
+        GameScreen,
+        ErrorScreen
     }
 
     class ApplicationView : Singleton<ApplicationView>
     {
 
         MenuCanvasManager menuCanvasManager;
-        
-
+        ScreenType NextScreen;
+        bool shows_error;
 
         override protected void Awake()
         {
             base.Awake();
             menuCanvasManager = MenuCanvasManager.GetInstance();
+            shows_error = false;
+            Display.displays[1].Activate();
         }
 
         public void ShowErrorMessage(String message)
         {
-            ((ErrorCanvasController)menuCanvasManager.GetCanvasControllerByType(MenuCanvasType.ErrorMessageMenu)).SetErrorMessage(message);
-            menuCanvasManager.ShowError();
+            OpenScreenByType(ScreenType.ErrorScreen);
+            menuCanvasManager.GetErrorCanvasController().SetErrorMessage(message);
+            shows_error = true;
+
         }
 
         public void CloseErrorMessage()
         {
-            menuCanvasManager.CloseError();
+            OpenScreenByType(NextScreen);
+            shows_error = false;
         }
 
         public void OpenScreen(ScreenType screenType)
+        {
+            if (shows_error)
+            {
+                NextScreen = screenType;
+            }
+            else
+            {
+                OpenScreenByType(screenType);
+            }
+            
+        }
+
+        private void OpenScreenByType(ScreenType screenType)
         {
             switch (screenType)
             {
@@ -84,8 +102,12 @@ namespace Assets.Scripts
                 case ScreenType.GameScreen:
                     //SceneManager.LoadScene(3);
                     break;
+
+                case ScreenType.ErrorScreen:
+                    menuCanvasManager.OpenCanvas(MenuCanvasType.ErrorMessageMenu);
+                    break;
             }
-        } 
+        }
 
 
         private void SwitchScene()

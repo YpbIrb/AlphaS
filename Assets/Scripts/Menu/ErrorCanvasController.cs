@@ -29,7 +29,7 @@ namespace Assets.Scripts.Menu
 
         protected void Awake()
         {
-            Debug.Log("In Awake in IdentificationTypeCanvasController");
+            Debug.Log("In Awake in ErrorMessageMenu");
             this.menuCanvasType = MenuCanvasType.ErrorMessageMenu;
             ERROR_MESSAGE = "Default error message";
             Error_Text = GetComponentInChildren<TMPro.TMP_Text>();

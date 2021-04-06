@@ -35,7 +35,10 @@ namespace Assets.Scripts.Menu
             base.Awake();
             canvasControllerList = GetComponentsInChildren<CanvasController>().ToList();
             canvas = GetComponentInChildren<Canvas>();
-            canvasControllerList.ForEach(x => x.gameObject.SetActive(false));
+            canvasControllerList.ForEach(x => {
+                Debug.Log("Deactivateing Canvas with type: " + x.menuCanvasType);
+                x.gameObject.SetActive(false);
+            });
             OpenCanvas(MenuCanvasType.IdentificationTypeChoiceMenu);
         }
 
@@ -74,6 +77,21 @@ namespace Assets.Scripts.Menu
                 Debug.LogWarning("The desired canvas was not found!");
                 return null;
             }
+        }
+
+        public RegistrationCanvasController GetRegistrationCanvasController()
+        {
+            return (RegistrationCanvasController)GetCanvasControllerByType(MenuCanvasType.RegistrationMenu);
+        }
+
+        public AuthorisationCanvasController GetAuthorisationCanvasController()
+        {
+            return (AuthorisationCanvasController)GetCanvasControllerByType(MenuCanvasType.AuthorisationMenu);
+        }
+
+        public ErrorCanvasController GetErrorCanvasController()
+        {
+            return (ErrorCanvasController)GetCanvasControllerByType(MenuCanvasType.ErrorMessageMenu);
         }
 
         public void DisableMenu()

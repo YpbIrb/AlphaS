@@ -14,7 +14,7 @@ namespace Assets.Scripts.Menu
         Authorisation_Send,
         Registration_Send,
         Main_BaseAlpha_Start,
-        Main_Assigment_Start,
+        Main_Matching_Start,
         Main_Game_Start,
         Error_close
     }
@@ -24,6 +24,10 @@ namespace Assets.Scripts.Menu
     public class ButtonController : MonoBehaviour
     {
         public ButtonType buttonType;
+
+        public delegate void ButtonClickHandler();
+        public event ButtonClickHandler Notify;
+
         //public CanvasController canvasController;
         ApplicationController applicationController;
         MenuCanvasManager canvasManager;
@@ -35,11 +39,54 @@ namespace Assets.Scripts.Menu
             menuButton.onClick.AddListener(OnButtonClicked);
             canvasManager = MenuCanvasManager.GetInstance();
             applicationController = ApplicationController.GetInstance();
+
+            switch (buttonType)
+            {
+                case ButtonType.IdentificationTypeChoice_Authorisation:
+                    Notify += applicationController.OnAuthorisationChosen;
+                    break;
+
+                case ButtonType.IdentificationTypeChoice_Registration:
+                    Notify += applicationController.OnRegistrationChosen;
+                    break;
+
+                case ButtonType.Authorisation_Send:
+                    Notify += applicationController.OnAuthorisationSend;
+                    break;
+
+                case ButtonType.Registration_Send:
+                    Notify += applicationController.OnRegistrationSend;
+                    break;
+
+
+                case ButtonType.Main_Matching_Start:
+                    Notify += applicationController.OnMatchingStart;
+                    break;
+
+                case ButtonType.Main_BaseAlpha_Start:
+                    Notify += applicationController.OnBaseAlphaStart;
+                    break;
+
+                case ButtonType.Main_Game_Start:
+                    //applicationController.OnNotification(Notification.GameStart);
+                    break;
+
+                case ButtonType.Error_close:
+                    Notify += applicationController.OnCloseError;
+                    break;
+
+                default:
+                    break;
+            }
+
+
         }
+
 
         void OnButtonClicked()
         {
-
+            Notify?.Invoke();
+            /*
             switch (buttonType)
             {
                 case ButtonType.IdentificationTypeChoice_Authorisation:
@@ -78,6 +125,8 @@ namespace Assets.Scripts.Menu
                 default:
                     break;
             }
+
+            */
         }
     }
 }

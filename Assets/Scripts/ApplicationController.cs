@@ -38,7 +38,7 @@ namespace Assets.Scripts
                     break;
 
                 case Notification.RegistrationSend:
-                    RegistrationCanvasController registrationCanvasController = (RegistrationCanvasController)canvasManager.GetCanvasControllerByType(MenuCanvasType.RegistrationMenu);
+                    RegistrationCanvasController registrationCanvasController = canvasManager.GetRegistrationCanvasController();
                     RegistrationRequest registrationInfo = registrationCanvasController.GetRegistrationInfo();
                     res = dataManager.Register(registrationInfo);
                     if (res != 0)
@@ -59,7 +59,7 @@ namespace Assets.Scripts
                     break;
 
                 case Notification.AuthorisationSend:
-                    AuthorisationCanvasController authorisationCanvasController = (AuthorisationCanvasController)canvasManager.GetCanvasControllerByType(MenuCanvasType.AuthorisationMenu);
+                    AuthorisationCanvasController authorisationCanvasController = canvasManager.GetAuthorisationCanvasController();
                     AuthorisationRequest authorisationInfo = authorisationCanvasController.GetAuthorisationInfo();
 
                     res = dataManager.Login(authorisationInfo);
@@ -81,8 +81,7 @@ namespace Assets.Scripts
 
                     Debug.Log(":AOSDkfjs;dlfkjad;rlrk");
 
-
-                    //applicationView.OpenScreen(ScreenType.BaseAlphaScreen);
+                    applicationView.OpenScreen(ScreenType.MainMenu);
                     break;
 
                 case Notification.GameStart:
@@ -101,6 +100,73 @@ namespace Assets.Scripts
                     break;
             }
         }
+
+        public void OnRegistrationChosen()
+        {
+            applicationView.OpenScreen(ScreenType.RegistrationMenu);
+        }
+
+        public void OnRegistrationSend()
+        {
+            RegistrationCanvasController registrationCanvasController = canvasManager.GetRegistrationCanvasController();
+            RegistrationRequest registrationInfo = registrationCanvasController.GetRegistrationInfo();
+            int res = dataManager.Register(registrationInfo);
+            if (res != 0)
+            {
+
+            }
+
+            //var net_manager = AlphaSNetManager.GetInstance();
+            //https://localhost:5001/api/Participant
+            //net_manager.SendGet("https://localhost:5001/api/Participant");
+
+            applicationView.OpenScreen(ScreenType.MainMenu);
+        }
+
+        public void OnAuthorisationChosen()
+        {
+            applicationView.OpenScreen(ScreenType.AuthorisationMenu);
+        }
+
+        public void OnAuthorisationSend()
+        {
+            AuthorisationCanvasController authorisationCanvasController = canvasManager.GetAuthorisationCanvasController();
+            AuthorisationRequest authorisationInfo = authorisationCanvasController.GetAuthorisationInfo();
+
+            int res = dataManager.Login(authorisationInfo);
+            if (res != 0)
+            {
+
+            }
+            applicationView.OpenScreen(ScreenType.MainMenu);
+        }
+
+        public void OnMatchingStart()
+        {
+            Debug.Log("Opening matching screen");
+            applicationView.OpenScreen(ScreenType.MatchingScreen);
+        }
+
+        public void OnBaseAlphaStart()
+        {
+            applicationView.ShowErrorMessage("No base alpha ((");
+
+            Debug.Log(":AOSDkfjs;dlfkjad;rlrk");
+
+            applicationView.OpenScreen(ScreenType.MainMenu);
+        }
+
+        public void OnMatchingFinish()
+        {
+            applicationView.OpenScreen(ScreenType.MainMenu);
+        }
+
+
+        public void OnCloseError()
+        {
+            applicationView.CloseErrorMessage();
+        }
+
 
 
     }
