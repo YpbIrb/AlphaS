@@ -14,26 +14,35 @@ namespace Assets.Scripts.Menu
         IdentificationTypeChoiceMenu,
         RegistrationMenu,
         AuthorisationMenu,
-        MainMenu
+        MainMenu,
+        ErrorMessageMenu
     }
 
 
 
-    public class MenuCanvasManager : Singleton<MenuCanvasManager>
+    public class MenuCanvasManager: Singleton<MenuCanvasManager>
     {
 
         List<CanvasController> canvasControllerList;
         CanvasController lastActiveCanvas;
 
+        Canvas canvas;
+
+
+
         protected override void Awake()
         {
             base.Awake();
             canvasControllerList = GetComponentsInChildren<CanvasController>().ToList();
-            canvasControllerList.ForEach(x => x.gameObject.SetActive(false));
-            SwitchCanvas(MenuCanvasType.IdentificationTypeChoiceMenu);
+            canvas = GetComponentInChildren<Canvas>();
+            canvasControllerList.ForEach(x => {
+                Debug.Log("Deactivateing Canvas with type: " + x.menuCanvasType);
+                x.gameObject.SetActive(false);
+            });
+            OpenCanvas(MenuCanvasType.IdentificationTypeChoiceMenu);
         }
 
-        public void SwitchCanvas(MenuCanvasType _type)
+        public void OpenCanvas(MenuCanvasType _type)
         {
             if (lastActiveCanvas != null)
             {
@@ -47,6 +56,12 @@ namespace Assets.Scripts.Menu
                 lastActiveCanvas = desiredCanvas;
             }
             else { Debug.LogWarning("The desired canvas was not found!"); }
+
+            if (!canvas.enabled)
+            {
+                canvas.enabled = true;
+            }
+
         }
 
         public CanvasController GetCanvasControllerByType(MenuCanvasType _type)
@@ -63,6 +78,42 @@ namespace Assets.Scripts.Menu
                 return null;
             }
         }
+
+        public RegistrationCanvasController GetRegistrationCanvasController()
+        {
+            return (RegistrationCanvasController)GetCanvasControllerByType(MenuCanvasType.RegistrationMenu);
+        }
+
+        public AuthorisationCanvasController GetAuthorisationCanvasController()
+        {
+            return (AuthorisationCanvasController)GetCanvasControllerByType(MenuCanvasType.AuthorisationMenu);
+        }
+
+        public ErrorCanvasController GetErrorCanvasController()
+        {
+            return (ErrorCanvasController)GetCanvasControllerByType(MenuCanvasType.ErrorMessageMenu);
+        }
+
+        public void DisableMenu()
+        {
+            canvas.enabled = false;
+        }
+
+        public void EnableMenu()
+        {
+            canvas.enabled = true;
+        }
+
+        public void ShowError()
+        {
+            OpenCanvas(MenuCanvasType.ErrorMessageMenu);
+        }
+
+        public void CloseError()
+        {
+
+        }
+
 
     }
 }
